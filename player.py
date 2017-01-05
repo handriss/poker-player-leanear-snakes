@@ -101,12 +101,15 @@ class Player:
         for player in game_state['players']:
             try:
                 return player['hole_cards']
-                break;
             except KeyError:
                 pass
 
+    def get_community_cards(self, game_state):
+        return game_state['community_cards']
+
     def betRequest(self, game_state):
         self.own_cards = self.get_own_cards(game_state)
+        self.community_cards = self.get_community_cards(game_state)
         print(self.own_cards)
         return 10000
 
