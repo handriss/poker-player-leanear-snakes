@@ -36,7 +36,7 @@ game_state = {
 
             "name": "Albert",                       # Name specified in the tournament config
 
-            "status": "active",                     # Status of the player:
+            "status": "out",                     # Status of the player:
                                                     #   - active: the player can make bets, and win the current pot
                                                     #   - folded: the player folded, and gave up interest in
                                                     #       the current pot. They can return in the next round.
@@ -59,11 +59,11 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "A",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "10",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "5",
+                    "rank": "A",
                     "suit": "hearts"
                 }
             ]
@@ -78,21 +78,21 @@ game_state = {
         }
     ],
     "community_cards": [                            # Finally the array of community cards.
-        {
-            "rank": "2",
-            "suit": "spades"
-        },
-        {
-            "rank": "2",
-            "suit": "hearts"
-        },
-        {"rank": "4",
-        "suit": "hearts"
-        },
-        {
-            "rank": "2",
-            "suit": "clubs"
-        }
+    #     {
+    #         "rank": "2",
+    #         "suit": "spades"
+    #     },
+    #     {
+    #         "rank": "2",
+    #         "suit": "hearts"
+    #     },
+    #     {"rank": "4",
+    #     "suit": "hearts"
+    #     },
+    #     {
+    #         "rank": "2",
+    #         "suit": "clubs"
+    #     }
     ]
 }
 
@@ -119,46 +119,47 @@ class Player:
 
 
     def betRequest(self, game_state):
-        self.own_cards = self.get_own_cards(game_state)
-        self.community_cards = self.get_community_cards(game_state)
-
-        # preflop
-        if(self.count_active_players(game_state) < 2):
-            if self.community_cards == []:
-                if self.check_preflop():
-                    return 5000
-            print ("miér")
-            return 0
-        else:
-
+        try:
             self.own_cards = self.get_own_cards(game_state)
             self.community_cards = self.get_community_cards(game_state)
 
             # preflop
-            if self.community_cards == []:
-                if self.check_preflop():
-                    return 34000
-
-            # post flop
+            if(self.count_active_players(game_state) > 2):
+                if self.community_cards == []:
+                    if self.check_preflop():
+                        return 5000
+                return 0
             else:
 
-                if self.check_ranks() in ["Royal Flush", "Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", "Two Pairs", "One Pair"]:
-                    return 5555
-                elif self.check_ranks() == "High Card":
-                    return 700
+                self.own_cards = self.get_own_cards(game_state)
+                self.community_cards = self.get_community_cards(game_state)
+
+                # preflop
+                if self.community_cards == []:
+                    if self.check_preflop():
+                        return 34000
+
+                # post flop
                 else:
-                    print ("lofas")
-                    return 0
-            print ("lol")
-            return 0
+
+                    if self.check_ranks() in ["Royal Flush", "Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", "Two Pairs", "One Pair"]:
+                        return 5555
+                    elif self.check_ranks() == "High Card":
+                        return 700
+                    else:
+                        return 0
+                return 0
+        except:
+            return 10000
 
     def showdown(self, game_state):
         pass
 
 
     def check_preflop(self):
+
         if self.count_active_players(game_state) > 2:
-            high_card = ['A', 'K']
+            high_card = ['A', 'K', 'Q']
             if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
                 return True
             if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
@@ -176,7 +177,7 @@ class Player:
     def count_active_players(self, game_state):
         counter = 0
         for player in game_state['players']:
-            if player['status'] == "out":
+            if player['status'] == "active":
                 counter += 1
         return counter
 
@@ -195,6 +196,7 @@ class Player:
             if self.card_order.index(highest_in_hand['rank']) > self.card_order.index(highest_on_table['rank']):
                 return True
             return False
+
 
     def check_ranks(self):
         """Checks ranks. It can return the following strings:
