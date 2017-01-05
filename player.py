@@ -119,7 +119,7 @@ class Player:
         self.community_cards = self.get_community_cards(game_state)
 
         if self.check_preflop():
-            return 100
+            return 10000
 
         return 0
 
