@@ -59,11 +59,11 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "9",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "A",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "9",
+                    "rank": "K",
                     "suit": "hearts"
                 }
             ]
@@ -71,7 +71,7 @@ game_state = {
         {
             "id": 2,
             "name": "Chuck",
-            "status": "out",
+            "status": "active",
             "version": "Default random player",
             "stack": 0,
             "bet": 0
@@ -119,20 +119,48 @@ class Player:
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
 
-        rank = self.check_ranks()
-        print(rank)
+        # preflop
+        if(self.count_active_players(game_state) > 2):
+            if self.community_cards == []:
+                if self.check_preflop():
+                    return 5000
+            return 0
+        else:
+
+            self.own_cards = self.get_own_cards(game_state)
+            self.community_cards = self.get_community_cards(game_state)
+
+            # preflop
+            if self.community_cards == []:
+                if self.check_preflop():
+                    return 34000
+
+            # post flop
+            else:
+
+                if self.check_high_card():
+                    return 30000
+            return 0
 
     def showdown(self, game_state):
         pass
 
 
     def check_preflop(self):
-        high_card = ['A', 'K', 'Q']
-        if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
-            return True
-        if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
-            return True
-        return False
+        if(self.count_active_players(game_state) > 2):
+            high_card = ['A', 'K', 'Q']
+            if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+                return True
+            if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
+                return True
+            return False
+        else:
+            high_card = ['A', 'K', 'Q', 'J', '10']
+            if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+                return True
+            if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
+                return True
+            return False
 
 
     def count_active_players(self, game_state):
@@ -144,21 +172,19 @@ class Player:
 
 
     def check_high_card(self):
-
-        if self.card_order.index(self.own_cards[0]['rank']) > self.card_order.index(self.own_cards[1]['rank']):
-            highest_in_hand = self.own_cards[0]
-        else:
-            highest_in_hand = self.own_cards[1]
-
-        highest_on_table = self.community_cards[0]
-        for card in self.community_cards:
-            if self.card_order.index(card['rank']) > self.card_order.index(highest_on_table['rank']):
-                highest_in_hand = card
-
-
-        if self.card_order.index(highest_in_hand['rank']) > self.card_order.index(highest_on_table['rank']):
-            return True
-        return False
+            if self.card_order.index(self.own_cards[0]['rank']) > self.card_order.index(self.own_cards[1]['rank']):
+                highest_in_hand = self.own_cards[0]
+                print(highest_in_hand)
+            else:
+                highest_in_hand = self.own_cards[1]
+            highest_on_table = self.community_cards[0]
+            for card in self.community_cards:
+                if self.card_order.index(card['rank']) > self.card_order.index(highest_on_table['rank']):
+                    highest_on_table = card
+            print(highest_on_table)
+            if self.card_order.index(highest_in_hand['rank']) > self.card_order.index(highest_on_table['rank']):
+                return True
+            return False
 
     def check_ranks(self):
         """Checks ranks. It can return the following strings:
@@ -236,55 +262,6 @@ class Player:
                     return "Nothing"
         return "High Card"
 
-
-
-    def check_ranks2(self):
-
-        hand_rank = []
-        for card in self.own_cards:
-            hand_rank.append(card['rank'])
-
-        community_rank = []
-        for card in self.community_cards:
-            community_rank.append(card['rank'])
-
-        all_rank = []
-        for card in self.community_cards + self.own_cards:
-            all_rank.append(card['rank'])
-
-
-        hand_list = []
-        for card in hand_rank:
-            hand_list.append(all_rank.count(card))
-
-        rank_length = len(set(all_rank))
-
-        if rank_length == 2:
-            return("poker")
-
-        if rank_length == 3:
-            for card in all_rank:
-                if all_rank.count(card) > 2:
-                    return("set")
-
-            if hand_list == [2, 2] or hand_list == [1, 2] or hand_list == [2, 1]:
-                return("two_pairs")
-
-        if hand_list == [1, 1]:
-            return "nothing"
-
-
-
-        # all_cards = set(all_cards)
-        #
-        # print(len(all_cards))
-
-        # for card in all_cards:
-        #     print(all_cards.count(card))
-
-
-    def check_set(self):
-        pass
 
 
 player = Player()
