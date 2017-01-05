@@ -124,7 +124,10 @@ class Player:
             self.community_cards = self.get_community_cards(game_state)
 
             # preflop
-            if(self.count_active_players(game_state) < 2):
+
+            if(self.count_active_players(game_state) == 2):
+                return 99
+            elif(self.count_active_players(game_state) < 2):
                 if self.community_cards == []:
                     if self.check_preflop():
                         return 5000
