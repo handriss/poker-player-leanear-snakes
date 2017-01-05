@@ -36,7 +36,7 @@ game_state = {
 
             "name": "Albert",                       # Name specified in the tournament config
 
-            "status": "out",                     # Status of the player:
+            "status": "active",                     # Status of the player:
                                                     #   - active: the player can make bets, and win the current pot
                                                     #   - folded: the player folded, and gave up interest in
                                                     #       the current pot. They can return in the next round.
@@ -59,11 +59,11 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "10",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "J",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "A",
+                    "rank": "J",
                     "suit": "hearts"
                 }
             ]
@@ -160,7 +160,8 @@ class Player:
 
         if self.count_active_players(game_state) < 2:
             high_card = ['A', 'K', 'Q']
-            if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+            high_pair = ['10', 'J', 'Q', 'K', 'A']
+            if self.own_cards[0]['rank'] == self.own_cards[1]['rank'] and self.own_cards[0]['rank'] in high_pair:
                 return True
             if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
                 return True
