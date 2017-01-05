@@ -78,18 +78,18 @@ game_state = {
         }
     ],
     "community_cards": [                            # Finally the array of community cards.
-        {
-            "rank": "2",
-            "suit": "spades"
-        },
-        {
-            "rank": "3",
-            "suit": "hearts"
-        },
-        {
-            "rank": "4",
-            "suit": "clubs"
-        }
+    #     {
+    #         "rank": "2",
+    #         "suit": "spades"
+    #     },
+    #     {
+    #         "rank": "3",
+    #         "suit": "hearts"
+    #     },
+    #     {
+    #         "rank": "4",
+    #         "suit": "clubs"
+    #     }
     ]
 }
 
@@ -118,9 +118,12 @@ class Player:
     def betRequest(self, game_state):
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
+        
+        # preflop
+        if self.community_cards == []:
+            if self.check_preflop():
+                return 10000
 
-        self.number_of_active_players = self.count_active_players(game_state)
-        print(self.number_of_active_players)
 
         return 0
 
@@ -129,10 +132,10 @@ class Player:
 
 
     def check_preflop(self):
-        high_card = ['A', 'K', 'Q', 'J', '10']
+        high_card = ['A', 'K', 'Q']
         if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
             return True
-        if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
+        if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
             return True
         return False
 
