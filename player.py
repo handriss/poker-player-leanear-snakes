@@ -96,27 +96,30 @@ game_state = {
 
 class Player:
     VERSION = "Leanear Snakes"
-
     def get_own_cards(self, game_state):
         for player in game_state['players']:
             try:
                 return player['hole_cards']
             except KeyError:
                 pass
-
     def get_community_cards(self, game_state):
         return game_state['community_cards']
-
     def betRequest(self, game_state):
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
         print(self.own_cards)
-        return 10000
-
+        if self.check_high_card():
+            return 10000
     def showdown(self, game_state):
         pass
-
-
-
+    def check_high_card(self):
+        high_card = ['A', 'K', 'Q', 'J', '10']
+        if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+            return True
+        if self.own_cards[0]['rank'] in high_card or self.own_cards[0]['rank'] in high_card:
+            return True
+        return False
 player = Player()
 print(player.betRequest(game_state))
+
+
