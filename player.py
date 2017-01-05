@@ -148,7 +148,7 @@ class Player:
 
     def check_preflop(self):
         if(self.count_active_players(game_state) > 2):
-            high_card = ['A', 'K', 'Q']
+            high_card = ['A', 'K']
             if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
                 return True
             if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
