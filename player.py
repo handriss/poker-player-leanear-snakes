@@ -126,7 +126,8 @@ class Player:
             # preflop
 
             if(self.count_active_players(game_state) == 2):
-                return 99
+                print("blind")
+                return (game_state["small_blind"]*2)
             elif(self.count_active_players(game_state) < 2):
                 if self.community_cards == []:
                     if self.check_preflop():
