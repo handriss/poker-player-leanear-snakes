@@ -124,7 +124,7 @@ class Player:
             self.community_cards = self.get_community_cards(game_state)
 
             # preflop
-            if(self.count_active_players(game_state) > 2):
+            if(self.count_active_players(game_state) < 2):
                 if self.community_cards == []:
                     if self.check_preflop():
                         return 5000
@@ -158,7 +158,7 @@ class Player:
 
     def check_preflop(self):
 
-        if self.count_active_players(game_state) > 2:
+        if self.count_active_players(game_state) < 2:
             high_card = ['A', 'K', 'Q']
             if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
                 return True
@@ -177,7 +177,7 @@ class Player:
     def count_active_players(self, game_state):
         counter = 0
         for player in game_state['players']:
-            if player['status'] == "active":
+            if player['status'] == "out":
                 counter += 1
         return counter
 
