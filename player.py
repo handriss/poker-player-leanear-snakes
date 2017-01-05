@@ -59,11 +59,11 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "A",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "4",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "K",
+                    "rank": "3",
                     "suit": "hearts"
                 }
             ]
@@ -71,7 +71,7 @@ game_state = {
         {
             "id": 2,
             "name": "Chuck",
-            "status": "active",
+            "status": "out",
             "version": "Default random player",
             "stack": 0,
             "bet": 0
@@ -83,11 +83,11 @@ game_state = {
             "suit": "spades"
         },
         {
-            "rank": "3",
+            "rank": "2",
             "suit": "hearts"
         },
         {
-            "rank": "3",
+            "rank": "2",
             "suit": "clubs"
         }
     ]
@@ -138,8 +138,12 @@ class Player:
             # post flop
             else:
 
-                if self.check_high_card():
-                    return 30000
+                if self.check_ranks() in ["Royal Flush", "Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", "Two Pairs", "One Pair"]:
+                    return 5555
+                elif self.check_ranks() == "High Card":
+                    return 700
+                else:
+                    return 0
             return 0
 
     def showdown(self, game_state):
@@ -197,7 +201,7 @@ class Player:
         Three of a Kind
         Two Pairs
         One Pair
-        High card
+        High Card
         Nothing
         """
 
