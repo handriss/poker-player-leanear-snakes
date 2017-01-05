@@ -127,7 +127,7 @@ class Player:
         #     self.check_high_card()
 
         if self.check_preflop():
-            return 100
+            return 10000
 
 
         return 0
