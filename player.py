@@ -116,18 +116,11 @@ class Player:
 
 
     def betRequest(self, game_state):
-        # self.own_cards = self.get_own_cards(game_state)
-        # self.community_cards = self.get_community_cards(game_state)
-        #
-        # # preflop
-        # if self.community_cards == []:
-        #     if self.check_preflop():
-        #         return 10000
-        #
-        # # post flop
-        # else:
-        #     if self.check_high_card():
-        #         return 10000
+        self.own_cards = self.get_own_cards(game_state)
+        self.community_cards = self.get_community_cards(game_state)
+
+        self.number_of_active_players = self.count_active_players(game_state)
+        print(self.number_of_active_players)
 
         return 0
 
@@ -144,6 +137,12 @@ class Player:
         return False
 
 
+    def count_active_players(self, game_state):
+        counter = 0
+        for player in game_state['players']:
+            if player['status'] == "active":
+                counter += 1
+        return counter
 
 
     def check_high_card(self):
@@ -164,9 +163,8 @@ class Player:
         return False
 
 
-    # Checks whether the player has one pair. The player has a pair only if one half of the pair is in her hands.
     def check_one_pair(self):
-
+        """Checks whether the player has one pair. The player has a pair only if one half of the pair is in her hands."""
         if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
             return True
 
@@ -177,7 +175,9 @@ class Player:
         return False
 
     def check_two_pairs(self):
-        pass
+        """Checks whether the player has two pairs. At least one half of a pair must be in the players hands to return true."""
+
+        return False
 
     def check_set(self):
         pass
