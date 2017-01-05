@@ -59,7 +59,7 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "4",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "J",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
@@ -78,18 +78,18 @@ game_state = {
         }
     ],
     "community_cards": [                            # Finally the array of community cards.
-        {
-            "rank": "2",
-            "suit": "spades"
-        },
-        {
-            "rank": "2",
-            "suit": "hearts"
-        },
-        {
-            "rank": "2",
-            "suit": "clubs"
-        }
+        # {
+        #     "rank": "2",
+        #     "suit": "spades"
+        # },
+        # {
+        #     "rank": "2",
+        #     "suit": "hearts"
+        # },
+        # {
+        #     "rank": "2",
+        #     "suit": "clubs"
+        # }
     ]
 }
 
@@ -151,20 +151,20 @@ class Player:
 
 
     def check_preflop(self):
-        if(self.count_active_players(game_state) > 2):
+        # if(self.count_active_players(game_state) > 2):
             high_card = ['A', 'K']
             if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
                 return True
             if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
                 return True
             return False
-        else:
-            high_card = ['A', 'K', 'Q', 'J', '10']
-            if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
-                return True
-            if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
-                return True
-            return False
+        # else:
+        #     high_card = ['A', 'K', 'Q', 'J', '10']
+        #     if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+        #         return True
+        #     if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
+        #         return True
+        #     return False
 
 
     def count_active_players(self, game_state):
