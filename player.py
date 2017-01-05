@@ -77,26 +77,27 @@ game_state = {
             "bet": 0
         }
     ],
-    # "community_cards": [                            # Finally the array of community cards.
-    #     {
-    #         "rank": "10",
-    #         "suit": "spades"
-    #     },
-    #     {
-    #         "rank": "10",
-    #         "suit": "hearts"
-    #     },
-    #     {
-    #         "rank": "10",
-    #         "suit": "clubs"
-    #     }
-    # ]
+    "community_cards": [                            # Finally the array of community cards.
+        {
+            "rank": "10",
+            "suit": "spades"
+        },
+        {
+            "rank": "10",
+            "suit": "hearts"
+        },
+        {
+            "rank": "10",
+            "suit": "clubs"
+        }
+    ]
 }
 
 
 class Player:
 
     VERSION = "Leanear Snakes"
+    card_order = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 
 
     def get_own_cards(self, game_state):
@@ -121,6 +122,8 @@ class Player:
         if self.community_cards is None:
             if self.check_preflop():
                 return 10000
+        else:
+            self.check_high_card()
 
         return 10000
 
@@ -142,12 +145,22 @@ class Player:
 
 
     def check_high_card(self):
-        pass
-        # get highest cards from hand
 
-        # get highest card from community cards
+        if self.card_order.index(self.own_cards[0]['rank']) > self.card_order.index(self.own_cards[1]['rank']):
+            highest_in_hand = self.own_cards[0]
+        else:
+            highest_in_hand = self.own_cards[1]
 
-        # is hand highest > community highest
+        highest_on_table = self.community_cards[0]
+        for card in self.community_cards:
+            if self.card_order.index(card['rank']) > self.card_order.index(highest_on_table['rank']):
+                highest_in_hand = card
+
+
+        if self.card_order.index(highest_in_hand['rank']) > self.card_order.index(highest_on_table['rank']):
+            return True
+        return False
+
 
     def check_one_pair(self):
         pass
