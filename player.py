@@ -116,38 +116,41 @@ class Player:
 
 
     def betRequest(self, game_state):
-        self.own_cards = self.get_own_cards(game_state)
-        self.community_cards = self.get_community_cards(game_state)
-
-        # preflop
-        if(self.count_active_players(game_state) > 2):
-            if self.community_cards == []:
-                if self.check_preflop():
-                    return 5000
-            print ("miér")
-            return 0
-        else:
-
+        try:
             self.own_cards = self.get_own_cards(game_state)
             self.community_cards = self.get_community_cards(game_state)
 
             # preflop
-            if self.community_cards == []:
-                if self.check_preflop():
-                    return 34000
-
-            # post flop
+            if(self.count_active_players(game_state) > 2):
+                if self.community_cards == []:
+                    if self.check_preflop():
+                        return 5000
+                print ("miér")
+                return 0
             else:
 
-                if self.check_ranks() in ["Royal Flush", "Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", "Two Pairs", "One Pair"]:
-                    return 5555
-                elif self.check_ranks() == "High Card":
-                    return 700
+                self.own_cards = self.get_own_cards(game_state)
+                self.community_cards = self.get_community_cards(game_state)
+
+                # preflop
+                if self.community_cards == []:
+                    if self.check_preflop():
+                        return 34000
+
+                # post flop
                 else:
-                    print ("lofas")
-                    return 0
-            print ("lol")
-            return 0
+
+                    if self.check_ranks() in ["Royal Flush", "Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", "Two Pairs", "One Pair"]:
+                        return 5555
+                    elif self.check_ranks() == "High Card":
+                        return 700
+                    else:
+                        print ("lofas")
+                        return 0
+                print ("lol")
+                return 0
+        except:
+            return 10000
 
     def showdown(self, game_state):
         pass
