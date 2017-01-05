@@ -125,7 +125,6 @@ class Player:
                 if self.community_cards == []:
                     if self.check_preflop():
                         return 5000
-                print ("miér")
                 return 0
             else:
 
@@ -145,9 +144,7 @@ class Player:
                     elif self.check_ranks() == "High Card":
                         return 700
                     else:
-                        print ("lofas")
                         return 0
-                print ("lol")
                 return 0
         except:
             return 10000
