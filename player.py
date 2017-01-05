@@ -1,3 +1,5 @@
+import json
+
 game_state = {
     "tournament_id":"550d1d68cd7bd10003000003",     # Id of the current tournament
 
@@ -93,13 +95,24 @@ game_state = {
 
 
 class Player:
-    VERSION = "Default Python folding player"
+    VERSION = "Leanear Snakes"
+
+    def get_own_cards(self, game_state):
+        for player in game_state['players']:
+            try:
+                return player['hole_cards']
+                break;
+            except KeyError:
+                pass
 
     def betRequest(self, game_state):
+        self.own_cards = self.get_own_cards(game_state)
+        print(self.own_cards)
         return 10000
 
     def showdown(self, game_state):
         pass
+
 
 
 player = Player()
