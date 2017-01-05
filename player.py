@@ -59,11 +59,11 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "A",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
-                    "suit": "hearts"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
+                    "rank": "4",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "A",
+                    "rank": "J",
                     "suit": "spades"
                 }
             ]
@@ -119,13 +119,18 @@ class Player:
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
 
-        if self.community_cards is None:
-            if self.check_preflop():
-                return 10000
-        else:
-            self.check_high_card()
 
-        return 10000
+        # if self.community_cards is None:
+        #     if self.check_preflop():
+        #         return 10000
+        # else:
+        #     self.check_high_card()
+
+        if self.check_preflop():
+            return 100
+
+
+        return 0
 
 
 
@@ -137,7 +142,7 @@ class Player:
         high_card = ['A', 'K', 'Q', 'J', '10']
         if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
             return True
-        if self.own_cards[0]['rank'] in high_card or self.own_cards[0]['rank'] in high_card:
+        if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
             return True
         return False
 
