@@ -59,11 +59,11 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "A",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "J",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "K",
+                    "rank": "J",
                     "suit": "hearts"
                 }
             ]
@@ -120,7 +120,7 @@ class Player:
         self.community_cards = self.get_community_cards(game_state)
 
         # preflop
-        if(self.count_active_players(game_state) < 2):
+        if(self.count_active_players(game_state) > 2):
             if self.community_cards == []:
                 if self.check_preflop():
                     return 5000
@@ -162,18 +162,18 @@ class Player:
                 return True
             return False
         # else:
-        #     high_card = ['A', 'K', 'Q', 'J', '10']
-        #     if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
-        #         return True
-        #     if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
-        #         return True
-        #     return False
+            # high_card = ['A', 'K', 'Q', 'J', '10']
+            # if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+            #     return True
+            # if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
+            #     return True
+            # return False
 
 
     def count_active_players(self, game_state):
         counter = 0
         for player in game_state['players']:
-            if player['status'] == "out":
+            if player['status'] == "active":
                 counter += 1
         return counter
 
