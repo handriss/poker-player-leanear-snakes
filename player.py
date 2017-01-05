@@ -116,18 +116,18 @@ class Player:
 
 
     def betRequest(self, game_state):
-        self.own_cards = self.get_own_cards(game_state)
-        self.community_cards = self.get_community_cards(game_state)
-
-        # preflop
-        if self.community_cards == []:
-            if self.check_preflop():
-                return 10000
-
-        # post flop
-        else:
-            if self.check_high_card():
-                return 10000
+        # self.own_cards = self.get_own_cards(game_state)
+        # self.community_cards = self.get_community_cards(game_state)
+        #
+        # # preflop
+        # if self.community_cards == []:
+        #     if self.check_preflop():
+        #         return 10000
+        #
+        # # post flop
+        # else:
+        #     if self.check_high_card():
+        #         return 10000
 
         return 0
 
@@ -185,5 +185,3 @@ class Player:
 
 player = Player()
 print(player.betRequest(game_state))
-
-
