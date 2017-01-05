@@ -118,14 +118,29 @@ class Player:
     def betRequest(self, game_state):
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
-        
+
         # preflop
-        if self.community_cards == []:
-            if self.check_preflop():
-                return 10000
+        active_players = self.count_active_players(game_state)
+        if(active_players > 2):
+            if self.community_cards == []:
+                if self.check_preflop():
+                    return 10000
+            return 0
+        else:
 
+            self.own_cards = self.get_own_cards(game_state)
+            self.community_cards = self.get_community_cards(game_state)
 
-        return 0
+            # preflop
+            if self.community_cards == []:
+                if self.check_preflop():
+                    return 10000
+
+            # post flop
+            else:
+                if self.check_high_card():
+                    return 10000
+            return 0
 
     def showdown(self, game_state):
         pass
@@ -149,21 +164,19 @@ class Player:
 
 
     def check_high_card(self):
-
-        if self.card_order.index(self.own_cards[0]['rank']) > self.card_order.index(self.own_cards[1]['rank']):
-            highest_in_hand = self.own_cards[0]
-        else:
-            highest_in_hand = self.own_cards[1]
-
-        highest_on_table = self.community_cards[0]
-        for card in self.community_cards:
-            if self.card_order.index(card['rank']) > self.card_order.index(highest_on_table['rank']):
-                highest_in_hand = card
-
-
-        if self.card_order.index(highest_in_hand['rank']) > self.card_order.index(highest_on_table['rank']):
-            return True
-        return False
+            if self.card_order.index(self.own_cards[0]['rank']) > self.card_order.index(self.own_cards[1]['rank']):
+                highest_in_hand = self.own_cards[0]
+                print(highest_in_hand)
+            else:
+                highest_in_hand = self.own_cards[1]
+            highest_on_table = self.community_cards[0]
+            for card in self.community_cards:
+                if self.card_order.index(card['rank']) > self.card_order.index(highest_on_table['rank']):
+                    highest_on_table = card
+            print(highest_on_table)
+            if self.card_order.index(highest_in_hand['rank']) > self.card_order.index(highest_on_table['rank']):
+                return True
+            return False
 
 
     def check_one_pair(self):
