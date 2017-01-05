@@ -78,18 +78,18 @@ game_state = {
         }
     ],
     "community_cards": [                            # Finally the array of community cards.
-    #     {
-    #         "rank": "2",
-    #         "suit": "spades"
-    #     },
-    #     {
-    #         "rank": "3",
-    #         "suit": "hearts"
-    #     },
-    #     {
-    #         "rank": "4",
-    #         "suit": "clubs"
-    #     }
+        {
+            "rank": "2",
+            "suit": "spades"
+        },
+        {
+            "rank": "3",
+            "suit": "hearts"
+        },
+        {
+            "rank": "3",
+            "suit": "clubs"
+        }
     ]
 }
 
@@ -118,14 +118,9 @@ class Player:
     def betRequest(self, game_state):
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
-        
-        # preflop
-        if self.community_cards == []:
-            if self.check_preflop():
-                return 10000
 
-
-        return 0
+        rank = self.check_ranks()
+        print(rank)
 
     def showdown(self, game_state):
         pass
@@ -165,22 +160,128 @@ class Player:
             return True
         return False
 
+    def check_ranks(self):
+        """Checks ranks. It can return the following strings:
+        Royal Flush
+        Straight Flush
+        Four of a Kind
+        Full House
+        Flush
+        Straight
+        Three of a Kind
+        Two Pairs
+        One Pair
+        High card
+        Nothing
+        """
 
-    def check_one_pair(self):
-        """Checks whether the player has one pair. The player has a pair only if one half of the pair is in her hands."""
-        if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
-            return True
+        hand_rank = []
+        for card in self.own_cards:
+            hand_rank.append(card['rank'])
 
-        for own_card in self.own_cards:
-            for community_card in self.community_cards:
-                if own_card['rank'] == community_card['rank']:
-                    return True
-        return False
+        comminity_rank = []
+        for card in self.community_cards:
+            comminity_rank.append(card['rank'])
 
-    def check_two_pairs(self):
-        """Checks whether the player has two pairs. At least one half of a pair must be in the players hands to return true."""
+        all_rank = []
+        for card in self.community_cards + self.own_cards:
+            all_rank.append(card['rank'])
 
-        return False
+        rank_length = len(all_rank) - len(set(all_rank))
+
+
+
+        # Royal Flush
+
+        # Straight Flush
+
+        # Four of a Kind
+        if rank_length == 3:
+            for card in hand_rank:
+                if all_rank.count(card) > 3:
+                    return "Four of a Kind"
+
+        # Full House
+        if rank_length == 3:
+            for card in hand_rank:
+                if all_rank.count(card) > 1:
+                    return "Full House"
+
+        # Flush
+
+        # Straight
+
+        # Three of a Kind
+        if rank_length == 2:
+            for card in hand_rank:
+                if all_rank.count(card) > 2:
+                    return "Set"
+
+        # Two Pairs
+        if rank_length == 2:
+            for card in hand_rank:
+                if all_rank.count(card) > 1:
+                    return "Two Pairs"
+
+        # One Pair
+        if rank_length == 1:
+            for card in hand_rank:
+                if all_rank.count(card) > 1:
+                    return "One Pair"
+
+        # High card
+        for card in hand_rank:
+            for comm_card in comminity_rank:
+                if self.card_order.index(card) < self.card_order.index(comm_card):
+                    return "Nothing"
+        return "High Card"
+
+
+
+    def check_ranks2(self):
+
+        hand_rank = []
+        for card in self.own_cards:
+            hand_rank.append(card['rank'])
+
+        community_rank = []
+        for card in self.community_cards:
+            community_rank.append(card['rank'])
+
+        all_rank = []
+        for card in self.community_cards + self.own_cards:
+            all_rank.append(card['rank'])
+
+
+        hand_list = []
+        for card in hand_rank:
+            hand_list.append(all_rank.count(card))
+
+        rank_length = len(set(all_rank))
+
+        if rank_length == 2:
+            return("poker")
+
+        if rank_length == 3:
+            for card in all_rank:
+                if all_rank.count(card) > 2:
+                    return("set")
+
+            if hand_list == [2, 2] or hand_list == [1, 2] or hand_list == [2, 1]:
+                return("two_pairs")
+
+        if hand_list == [1, 1]:
+            return "nothing"
+
+
+
+        # all_cards = set(all_cards)
+        #
+        # print(len(all_cards))
+
+        # for card in all_cards:
+        #     print(all_cards.count(card))
+
 
     def check_set(self):
         pass
