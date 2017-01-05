@@ -142,8 +142,16 @@ class Player:
                 # post flop
                 else:
 
-                    if self.check_ranks() in ["Royal Flush", "Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", "Two Pairs", "One Pair"]:
+                    if self.check_ranks() in ["Royal Flush", "Straight Flush", "Four of a Kind", "Full House", "Flush"]:
                         return 5555
+                    elif self.check_ranks() == "Straight":
+                        return 1100
+                    elif self.check_ranks() == "Three of a Kind":
+                        return 1000
+                    elif self.check_ranks() == "Two Pairs":
+                        return 900
+                    elif self.check_ranks() == "One Pair":
+                        return 800
                     elif self.check_ranks() == "High Card":
                         return 700
                     else:
