@@ -63,7 +63,7 @@ game_state = {
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "K",
+                    "rank": "5",
                     "suit": "hearts"
                 }
             ]
@@ -85,6 +85,9 @@ game_state = {
         {
             "rank": "2",
             "suit": "hearts"
+        },
+        {"rank": "4",
+        "suit": "hearts"
         },
         {
             "rank": "2",
@@ -151,20 +154,20 @@ class Player:
 
 
     def check_preflop(self):
-        # if(self.count_active_players(game_state) > 2):
+        if self.count_active_players(game_state) > 2:
             high_card = ['A', 'K']
             if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
                 return True
             if self.own_cards[0]['rank'] in high_card and self.own_cards[1]['rank'] in high_card:
                 return True
             return False
-        # else:
-        #     high_card = ['A', 'K', 'Q', 'J', '10']
-        #     if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
-        #         return True
-        #     if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
-        #         return True
-        #     return False
+        else:
+            high_card = ['A', 'K', 'Q', 'J', '10']
+            if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+                return True
+            if self.own_cards[0]['rank'] in high_card or self.own_cards[1]['rank'] in high_card:
+                return True
+            return False
 
 
     def count_active_players(self, game_state):
@@ -217,9 +220,17 @@ class Player:
         for card in self.community_cards + self.own_cards:
             all_rank.append(card['rank'])
 
+        print(all_rank)
+
         rank_length = len(all_rank) - len(set(all_rank))
 
+        hand_suit = []
+        for card in self.own_cards:
+            hand_suit.append(card['suit'])
 
+        all_suit = []
+        for card in self.community_cards + self.own_cards:
+            all_suit.append(card['suit'])
 
         # Royal Flush
 
@@ -238,8 +249,16 @@ class Player:
                     return "Full House"
 
         # Flush
+        for card in hand_suit:
+            if all_suit.count(card) > 4:
+                return "Flush"
 
         # Straight
+        # [x for (y, x) in sorted(zip(Y, X))]
+
+
+
+
 
         # Three of a Kind
         if rank_length == 2:
@@ -270,3 +289,4 @@ class Player:
 
 player = Player()
 print(player.betRequest(game_state))
+print(player.check_ranks())
