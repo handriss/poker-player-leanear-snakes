@@ -119,19 +119,17 @@ class Player:
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
 
+        # preflop
+        if self.community_cards == []:
+            if self.check_preflop():
+                return 10000
 
-        # if self.community_cards is None:
-        #     if self.check_preflop():
-        #         return 10000
-        # else:
-        #     self.check_high_card()
-
-        print(self.check_one_pair())
-
+        # post flop
+        else:
+            if self.check_high_card():
+                return 10000
 
         return 0
-
-
 
     def showdown(self, game_state):
         pass
