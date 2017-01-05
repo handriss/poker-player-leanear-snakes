@@ -59,12 +59,12 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "4",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "9",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "J",
-                    "suit": "spades"
+                    "rank": "9",
+                    "suit": "hearts"
                 }
             ]
         },
@@ -79,15 +79,15 @@ game_state = {
     ],
     "community_cards": [                            # Finally the array of community cards.
         {
-            "rank": "10",
+            "rank": "2",
             "suit": "spades"
         },
         {
-            "rank": "10",
+            "rank": "3",
             "suit": "hearts"
         },
         {
-            "rank": "10",
+            "rank": "4",
             "suit": "clubs"
         }
     ]
@@ -126,8 +126,7 @@ class Player:
         # else:
         #     self.check_high_card()
 
-        if self.check_preflop():
-            return 10000
+        print(self.check_one_pair())
 
 
         return 0
@@ -167,8 +166,17 @@ class Player:
         return False
 
 
+    # Checks whether the player has one pair. The player has a pair only if one half of the pair is in her hands.
     def check_one_pair(self):
-        pass
+
+        if self.own_cards[0]['rank'] == self.own_cards[1]['rank']:
+            return True
+
+        for own_card in self.own_cards:
+            for community_card in self.community_cards:
+                if own_card['rank'] == community_card['rank']:
+                    return True
+        return False
 
     def check_two_pairs(self):
         pass
