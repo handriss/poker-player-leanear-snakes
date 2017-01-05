@@ -59,11 +59,11 @@ game_state = {
             "hole_cards": [                         # The cards of the player. This is only visible for your own player
                                                     #     except after showdown, when cards revealed are also included.
                 {
-                    "rank": "J",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
+                    "rank": "A",                    # Rank of the card. Possible values are numbers 2-10 and J,Q,K,A
                     "suit": "spades"                # Suit of the card. Possible values are: clubs,spades,hearts,diamonds
                 },
                 {
-                    "rank": "3",
+                    "rank": "K",
                     "suit": "hearts"
                 }
             ]
@@ -71,25 +71,25 @@ game_state = {
         {
             "id": 2,
             "name": "Chuck",
-            "status": "out",
+            "status": "active",
             "version": "Default random player",
             "stack": 0,
             "bet": 0
         }
     ],
     "community_cards": [                            # Finally the array of community cards.
-        # {
-        #     "rank": "2",
-        #     "suit": "spades"
-        # },
-        # {
-        #     "rank": "2",
-        #     "suit": "hearts"
-        # },
-        # {
-        #     "rank": "2",
-        #     "suit": "clubs"
-        # }
+        {
+            "rank": "2",
+            "suit": "spades"
+        },
+        {
+            "rank": "2",
+            "suit": "hearts"
+        },
+        {
+            "rank": "2",
+            "suit": "clubs"
+        }
     ]
 }
 
