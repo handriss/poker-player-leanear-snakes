@@ -118,9 +118,8 @@ class Player:
         self.own_cards = self.get_own_cards(game_state)
         self.community_cards = self.get_community_cards(game_state)
 
-        if self.community_cards is None:
-            if self.check_preflop():
-                return 10000
+        if self.check_preflop():
+            return 10000
 
         return 0
 
